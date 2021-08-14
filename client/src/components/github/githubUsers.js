@@ -11,7 +11,7 @@ const githubUsers = ({ users }) => {
             const { avatar_url, id, login } = curElem;
             return (
               <div className="col-10 col-md-4 mt-5" key={id}>
-                <div className="card p-2">
+                <div className="card p-2 shadow">
                   <div className="d-flex align-items-center">
                     <div className="image">
                       <img src={avatar_url} className="rounded" width="155" alt="profile pic"/>
