@@ -33,11 +33,9 @@ app.use(cors());
 readdirSync("./routes").map((r) => app.use("/api", require("./routes/" + r)));
 
 //route
-app.get("/api", (req, res) => {
-  res.json({
-    data: "hey you hit the right api",
-  });
-});
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+}
 
 //PORT
 const port = process.env.PORT || 5000;
