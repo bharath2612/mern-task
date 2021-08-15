@@ -10,13 +10,14 @@ const githubUsers = ({ users }) => {
           {users.map((curElem) => {
             const { avatar_url, id, login } = curElem;
             return (
-              <div className="col-10 col-md-4 mt-5" key={id}>
+              <div className="col-12 col-md-4 mt-5 cardbox" key={id}>
                 <div className="card p-2 shadow">
                   <div className="d-flex align-items-center">
                     <div className="image">
-                      <img src={avatar_url} className="rounded" width="155" alt="profile pic"/>
+                      <img src={avatar_url} className="rounded d-none d-md-block" width="155" alt="profile pic"/>
+                      <img src={avatar_url} className="rounded d-block d-md-none" width="85" alt="profile pic"/>
                     </div>
-                    <div className="ml-3 w-100">
+                    <div className="ml-2 w-100">
                       <h4 className="mb-0 mt-0 textLeft">
                         {login} <FaGithub />
                       </h4>
