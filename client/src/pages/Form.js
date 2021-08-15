@@ -1,31 +1,49 @@
 import React, { useState } from "react";
 import { Row, Col } from "reactstrap";
 import Button from "@material-ui/core/Button";
+import { toast } from "react-toastify";
 
 const Form = () => {
   const [url, setUrl] = useState("");
   const [message, setMessage] = useState("");
   const [response, setResponse] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("url", url);
     console.log("message", message);
-
-    let result = await fetch(`${url}`, {
-      method: "post",
-      mode: "no-cors",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        message,
-      }),
-    });
-
-    console.log("result", result);
-    setResponse(result);
+    try {
+      await fetch(`${url}`, {
+        method: "post",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "http://localhost:3000",
+          "Access-Control-Allow-Credentials": "true",
+        },
+        body: JSON.stringify({
+          message,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          toast.success("Request Successful");
+          setResponse(data);
+          setError("");
+        })
+        .catch((err) => {
+          console.log("errorrr", err);
+          toast.error("Post Request Failed");
+          setResponse("");
+          setError("Post Request Failed");
+        });
+    } catch (err) {
+      console.log("errorrr", err);
+      toast.error("Post Request Failed");
+      setResponse("");
+      setError("Post Request Failed");
+    }
   };
 
   return (
@@ -55,7 +73,6 @@ const Form = () => {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
               />
-              {response && JSON.stringify(response)}
             </div>
             <Button
               type="submit"
@@ -64,8 +81,14 @@ const Form = () => {
               color="primary"
               className="float-right"
             >
-              Submit
+              Send
             </Button>
+          </Col>
+          <Col xs="12" md="6" className="text-center">
+            {response && (
+              <h5 className="text-success">{JSON.stringify(response)}</h5>
+            )}
+            {error && <h5 className="text-danger">{JSON.stringify(error)}</h5>}
           </Col>
         </Row>
       </form>
